@@ -1,14 +1,14 @@
-version: '3'
+version: '3.4'
 
 services:
     sql:
         build: ./SQL/
         container_name: sql_rafiki
         ports: 
-            - "41433:1433"
+            - "127.0.0.1:41433:1433"
         environment:
             - ACCEPT_EULA=Y
-            - SA_PASSWORD=#CLRc665
+            - SA_PASSWORD=password
         volumes:
             - dbdata:/var/opt/mssql
     
@@ -16,8 +16,8 @@ services:
         build: ./Elastic/
         container_name: elastic_rafiki
         ports: 
-            - "49200:9200"
-            - "49300:9300"
+            - "127.0.0.1:49200:9200"
+            - "127.0.0.1:49300:9300"
         environment:
             - START_DAEMON=true
         volumes:
@@ -27,10 +27,12 @@ services:
     kibana:
         build: ./Kibana/
         container_name: kibana_rafiki
+        depends_on:
+            - elastic
         ports: 
-            - "45601:5601"
+            - "127.0.0.1:45601:5601"
         environment:
-            - ELASTICSEARCH_URL=http://elasticsearch:9200
+            - ELASTICSEARCH_URL=http://elastic:9200
         volumes: 
             - ./Kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
 
@@ -38,7 +40,7 @@ services:
         build: ./Redis/
         container_name: redis_rafiki
         ports:
-            - "46379:6379"        
+            - "127.0.0.1:46379:6379"
 
 volumes: 
     dbdata:

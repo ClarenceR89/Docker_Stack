@@ -1,4 +1,4 @@
-# Rafiki.Tech.Stack
+# Docker.Tech.Stack
 ## Dockerized Development Environment 
 
 ## This solution will create a docker container for each of the following:
